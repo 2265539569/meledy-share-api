@@ -1,0 +1,52 @@
+server:
+  port: 8081
+spring:
+  profiles:
+    active: dev
+  application:
+    name: front-service
+  datasource:
+    driver-class-name: ${cake.datasource.driver-class-name}
+    url: jdbc:mysql://${cake.datasource.host}:${cake.datasource.port}/${cake.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${cake.datasource.username}
+    password: ${cake.datasource.password}
+  # 配置日期格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss #时间戳统一转换为指定格式
+    time-zone: GMT+8 # 时区修改为东8区
+  # 设置Springboot控制台颜色输出
+  output:
+    ansi:
+      enabled: always
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.cpujazz.front.pojo.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration-properties:
+    offsetAsPageNum: true
+    rowBoundsWithCount: true
+    reasonable: true
+    mapper-locations: mybatis/mapper/*.xml
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'melody_share_platform前台接口文档'
+      paths-to-match: '/**'
+      #      这里改不改无所谓
+      packages-to-scan: com.cpujazz.front
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
