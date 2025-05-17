@@ -1,13 +1,18 @@
 package com.cpujazz.front.pojo.entity;
 
-import java.util.Date;
-
-import com.cpujazz.front.enumeration.UserRole;
-import com.cpujazz.front.enumeration.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
+
+/**
+ * 用户表(Users)表实体类
+ *
+ * @author makejava
+ * @since 2025-05-17 15:18:57
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,9 +27,9 @@ public class User {
     private String nickname;
     //头像地址    
     private String avatar;
-    //角色：管理员(ADMIN) 普通用户(USER)
+    //角色：普通用户或管理员    
     private String role;
-    //账号状态：0禁用, 1正常
+    //账号状态：1正常，0禁用    
     private Integer status;
     //注册时间    
     private Date createdAt;

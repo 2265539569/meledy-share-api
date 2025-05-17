@@ -1,8 +1,9 @@
 package com.cpujazz.front.pojo.result;
 
-import com.cpujazz.front.enumeration.ResponseMessage;
+import com.cpujazz.common.enumeration.ResponseMessage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,22 @@ public class ResponseResult {
         return new ResponseResult(
                 ResponseMessage.SUCCESS.getCode(),
                 ResponseMessage.SUCCESS.getMessage(),
+                null);
+    }
+
+    // 有参自定义成功返回
+    public static ResponseResult success(ResponseMessage message, Object data) {
+        return new ResponseResult(
+                message.getCode(),
+                message.getMessage(),
+                data);
+    }
+
+    // 无参自定义成功返回
+    public static ResponseResult success(ResponseMessage message) {
+        return new ResponseResult(
+                message.getCode(),
+                message.getMessage(),
                 null);
     }
 
