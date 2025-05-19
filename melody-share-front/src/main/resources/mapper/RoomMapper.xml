@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.cpujazz.front.mapper.RoomMapper">
+    <insert id="insertOne">
+        insert into rooms (room_name, room_pass, description, owner_id, is_public, status, created_at, updated_at)
+        VALUES (#{roomName}, #{roomPass}, #{description}, #{ownerId}, #{isPublic}, #{status}, #{createdAt},
+                #{updatedAt})
+    </insert>
+
+    <select id="selectAllList" resultType="com.cpujazz.front.pojo.entity.Room">
+        select *
+        from rooms
+    </select>
+    <select id="selectByRoomName" resultType="com.cpujazz.front.pojo.entity.Room">
+        select *
+        from rooms
+        where room_name = #{roomName}
+    </select>
+</mapper>
