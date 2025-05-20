@@ -4,18 +4,24 @@
 
 <mapper namespace="com.cpujazz.front.mapper.RoomMapper">
     <insert id="insertOne">
-        insert into rooms (room_name, room_pass, description, owner_id, is_public, status, created_at, updated_at)
-        VALUES (#{roomName}, #{roomPass}, #{description}, #{ownerId}, #{isPublic}, #{status}, #{createdAt},
+        insert into room (room_name, room_password, description, owner_id, is_public, created_at, updated_at)
+        VALUES (#{roomName}, #{roomPassword}, #{description}, #{ownerId}, #{isPublic}, #{createdAt},
                 #{updatedAt})
     </insert>
 
     <select id="selectAllList" resultType="com.cpujazz.front.pojo.entity.Room">
         select *
-        from rooms
+        from room
     </select>
     <select id="selectByRoomName" resultType="com.cpujazz.front.pojo.entity.Room">
         select *
-        from rooms
+        from room
         where room_name = #{roomName}
     </select>
+    <select id="selectByRoomId" resultType="com.cpujazz.front.pojo.entity.Room">
+        select *
+        from room
+        where id = #{roomId}
+    </select>
+
 </mapper>

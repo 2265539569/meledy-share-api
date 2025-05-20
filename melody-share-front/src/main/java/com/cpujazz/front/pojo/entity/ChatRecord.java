@@ -8,23 +8,25 @@ import java.util.Date;
 
 
 /**
- * 房间成员表(RoomMember)表实体类
+ * 聊天记录表(ChatRecord)表实体类
  *
  * @author makejava
- * @since 2025-05-20 10:19:00
+ * @since 2025-05-20 10:19:07
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomMember {
+public class ChatRecord {
     //编号    
     private Long id;
     //房间id    
     private Long roomId;
     //用户id    
     private Long userId;
-    //加入时间    
-    private Date joinTime;
+    //用户发送的消息    
+    private String chatMessage;
+    //发送时间    
+    private Date sendTime;
 
 
 }

@@ -22,4 +22,19 @@ public class RoomController {
     public ResponseResult add(@RequestBody RoomAddDto roomAddDto) {
         return roomService.add(roomAddDto);
     }
+
+    @GetMapping("/info")
+    public ResponseResult info() {
+        return roomService.info();
+    }
+
+    @GetMapping("/join")
+    public ResponseResult join(Long roomId, String roomPassword) {
+        return roomService.join(roomId, roomPassword);
+    }
+
+    @GetMapping("/exit")
+    public ResponseResult exit() {
+        return roomService.exit();
+    }
 }

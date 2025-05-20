@@ -4,18 +4,19 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import com.cpujazz.common.enumeration.ResponseMessage;
 import com.cpujazz.common.enumeration.RoomPermission;
-import com.cpujazz.common.enumeration.RoomStatus;
 import com.cpujazz.front.mapper.RoomMapper;
 import com.cpujazz.front.mapper.RoomMemberMapper;
 import com.cpujazz.front.mapper.UserMapper;
 import com.cpujazz.front.pojo.dto.RoomAddDto;
 import com.cpujazz.front.pojo.dto.RoomDto;
 import com.cpujazz.front.pojo.entity.Room;
+import com.cpujazz.front.pojo.entity.RoomMember;
 import com.cpujazz.front.pojo.entity.User;
 import com.cpujazz.front.pojo.result.ResponseResult;
 import com.cpujazz.front.service.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -45,21 +46,92 @@ public class RoomServiceImpl implements RoomService {
         // 重复房间名字检查
         Room room = roomMapper.selectByRoomName(roomAddDto.getRoomName());
         if (!Objects.isNull(room)) {
-            return ResponseResult.error(ResponseMessage.ERROR_ROOM_EXISTS);
+            return ResponseResult.error(ResponseMessage.ERROR_ROOM_NAME_EXISTS);
         }
         room = BeanUtil.copyProperties(roomAddDto, Room.class);
-        if (!room.getRoomPass().isEmpty()) {
+        if (!room.getRoomPassword().isEmpty()) {
             room.setIsPublic(RoomPermission.PRIVATE.getCode());
         } else room.setIsPublic(RoomPermission.PUBLIC.getCode());
         room.setCreatedAt(new Date());
         room.setUpdatedAt(new Date());
         Long userId = StpUtil.getLoginIdAsLong();
         room.setOwnerId(userId);
-        room.setStatus(RoomStatus.INACTIVE.getStatus());
         int count = roomMapper.insertOne(room);
         if (count == 1) {
             return ResponseResult.success(ResponseMessage.SUCCESS_ROOM_INSERT);
         }
         return ResponseResult.error();
     }
+
+    @Override
+    @Transactional
+    public ResponseResult join(Long roomId, String roomPassword) {
+        // 1. 检查房间是否存在
+        Room room = roomMapper.selectByRoomId(roomId);
+        if (Objects.isNull(room)) {
+            return ResponseResult.error(ResponseMessage.ERROR_ROOM_NAME_NOT_EXISTS);
+        }
+
+        // 2. 检查房间密码是否正确
+        if (!room.getRoomPassword().equals(roomPassword)) {
+            return ResponseResult.error(ResponseMessage.ERROR_ROOM_PASSWORD);
+        }
+
+        // 3. 获取当前用户ID
+        Long userId = StpUtil.getLoginIdAsLong();
+
+        // 4. 检查用户是否已经存在于其他房间中
+        Long existingRoomId = roomMemberMapper.selectRoomIdByUserId(userId);
+        if (existingRoomId != null && !existingRoomId.equals(roomId)) {
+            return ResponseResult.error(ResponseMessage.ERROR_USER_ALREADY_IN_ROOM);
+        }
+
+        // 5. 检查用户是否已经存在于目标房间中
+        RoomMember existingMember = roomMemberMapper.selectByUserIdAndRoomId(userId, roomId);
+        if (existingMember != null) {
+            return ResponseResult.error(ResponseMessage.ERROR_ROOM_USER_EXISTS);
+        }
+
+        // 6. 创建新的房间成员记录
+        RoomMember roomMember = new RoomMember();
+        roomMember.setRoomId(roomId);
+        roomMember.setUserId(userId);
+        roomMember.setJoinTime(new Date());
+
+        // 7. 插入房间成员记录
+        int count = roomMemberMapper.insertUserIdByRoomId(roomMember);
+        if (count == 1) {
+            return ResponseResult.success(ResponseMessage.SUCCESS_ROOM_USER_JOIN);
+        }
+
+        return ResponseResult.error();
+    }
+
+    @Override
+    public ResponseResult info() {
+        Long userId = StpUtil.getLoginIdAsLong();
+        RoomMember roomMember = roomMemberMapper.selectByUserId(userId);
+        if (Objects.isNull(roomMember)) {
+            return ResponseResult.error(ResponseMessage.ERROR_ROOM_NOT_EXISTS);
+        }
+        Room room = roomMapper.selectByRoomId(roomMember.getRoomId());
+        RoomDto roomDto = BeanUtil.copyProperties(room, RoomDto.class);
+        return ResponseResult.success(roomDto);
+    }
+
+    @Override
+    public ResponseResult exit() {
+        Long userId = StpUtil.getLoginIdAsLong();
+        RoomMember roomMember = roomMemberMapper.selectByUserId(userId);
+        if (Objects.isNull(roomMember)) {
+            return ResponseResult.error();
+        }
+        boolean isDeleted = roomMemberMapper.deleteById(roomMember.getId());
+        if (isDeleted) {
+            return ResponseResult.success(ResponseMessage.SUCCESS_ROOM_USER_EXIT);
+        }
+        return ResponseResult.error();
+    }
+
+
 }

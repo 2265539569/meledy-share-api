@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum RoomPermission {
-    PRIVATE(0),
-    PUBLIC(1);
+    PUBLIC(0),
+    PRIVATE(1);
 
     private final int code;
 }

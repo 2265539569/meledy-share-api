@@ -6,8 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum UserStatus {
-    DISABLED(0),
-    ENABLED(1);
-
+    ENABLED(0),
+    DISABLED(1);
     private final int code;
 }

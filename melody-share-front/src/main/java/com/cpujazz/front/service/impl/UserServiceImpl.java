@@ -3,6 +3,7 @@ package com.cpujazz.front.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import com.cpujazz.common.enumeration.ResponseMessage;
+import com.cpujazz.common.enumeration.UserRole;
 import com.cpujazz.common.enumeration.UserStatus;
 import com.cpujazz.front.mapper.UserMapper;
 import com.cpujazz.front.pojo.dto.UserLoginDto;
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
         user.setUpdatedAt(new Date());
         user.setCreatedAt(new Date());
         user.setAvatar(null);
-        user.setRole("USER");
+        user.setRole(UserRole.USER.getRole());
         user.setStatus(UserStatus.ENABLED.getCode());
         int count = userMapper.insertOne(user);
         if (count > 0) {

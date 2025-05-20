@@ -11,7 +11,7 @@ public class RoomAddDto {
     //房间名称
     private String roomName;
     //房间密码    
-    private String roomPass;
+    private String roomPassword;
     //房间描述    
     private String description;
 }

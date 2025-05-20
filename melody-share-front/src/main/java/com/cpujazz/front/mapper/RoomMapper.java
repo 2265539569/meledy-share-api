@@ -12,4 +12,8 @@ public interface RoomMapper {
     int insertOne(Room room);
 
     Room selectByRoomName(String roomName);
+
+    Room selectByRoomId(Long roomId);
+
+    Room selectByUserId(Long userId);
 }

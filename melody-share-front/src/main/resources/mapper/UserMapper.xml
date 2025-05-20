@@ -4,19 +4,19 @@
 
 <mapper namespace="com.cpujazz.front.mapper.UserMapper">
     <insert id="insertOne">
-        insert into users (username, password, nickname, avatar, role, status, created_at, updated_at)
+        insert into user (username, password, nickname, avatar, role, status, created_at, updated_at)
         VALUES (#{username}, #{password}, #{nickname}, #{avatar}, #{role}, #{status}, #{createdAt}, #{updatedAt})
     </insert>
 
     <select id="selectByUserName" parameterType="String" resultType="com.cpujazz.front.pojo.entity.User">
         select *
-        from users
+        from user
         where username = #{username}
     </select>
 
     <select id="selectByUserId" resultType="com.cpujazz.front.pojo.entity.User">
         select *
-        from users
+        from user
         where id = #{id}
     </select>
 </mapper>

@@ -3,6 +3,6 @@ ms:
     driver-class-name: com.mysql.cj.jdbc.Driver
     host: localhost
     port: 3306
-    database: melody_share_platform
+    database: melody_share
     username: root
     password: 123456
