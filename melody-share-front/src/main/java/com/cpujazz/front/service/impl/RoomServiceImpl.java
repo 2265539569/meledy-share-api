@@ -29,22 +29,26 @@ public class RoomServiceImpl implements RoomService {
     private final UserMapper userMapper;
     private final RoomMemberMapper roomMemberMapper;
 
-    @Override
-    public ResponseResult list() {
-        List<Room> roomList = roomMapper.selectAllList();
+    public List<RoomDto> RoomToDto(List<Room> roomList) {
         List<RoomDto> roomDtoList = BeanUtil.copyToList(roomList, RoomDto.class);
         for (RoomDto roomDto : roomDtoList) {
             User user = userMapper.selectByUserId(roomDto.getOwnerId());
             roomDto.setOwnerName(user.getNickname());
             roomDto.setCount(roomMemberMapper.countRoomMembers(roomDto.getId()));
         }
-        return ResponseResult.success(roomDtoList);
+        return roomDtoList;
+    }
+
+    @Override
+    public ResponseResult list() {
+        List<Room> roomList = roomMapper.selectList();
+        return ResponseResult.success(RoomToDto(roomList));
     }
 
     @Override
     public ResponseResult add(RoomAddDto roomAddDto) {
         // 重复房间名字检查
-        Room room = roomMapper.selectByRoomName(roomAddDto.getRoomName());
+        Room room = roomMapper.selectOneByRoomName(roomAddDto.getRoomName());
         if (!Objects.isNull(room)) {
             return ResponseResult.error(ResponseMessage.ERROR_ROOM_NAME_EXISTS);
         }
@@ -67,7 +71,7 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public ResponseResult join(Long roomId, String roomPassword) {
         // 1. 检查房间是否存在
-        Room room = roomMapper.selectByRoomId(roomId);
+        Room room = roomMapper.selectOneByRoomId(roomId);
         if (Objects.isNull(room)) {
             return ResponseResult.error(ResponseMessage.ERROR_ROOM_NAME_NOT_EXISTS);
         }
@@ -114,7 +118,7 @@ public class RoomServiceImpl implements RoomService {
         if (Objects.isNull(roomMember)) {
             return ResponseResult.error(ResponseMessage.ERROR_ROOM_NOT_EXISTS);
         }
-        Room room = roomMapper.selectByRoomId(roomMember.getRoomId());
+        Room room = roomMapper.selectOneByRoomId(roomMember.getRoomId());
         RoomDto roomDto = BeanUtil.copyProperties(room, RoomDto.class);
         return ResponseResult.success(roomDto);
     }
@@ -133,5 +137,12 @@ public class RoomServiceImpl implements RoomService {
         return ResponseResult.error();
     }
 
-
+    @Override
+    public ResponseResult search(String roomName) {
+        List<Room> roomList = roomMapper.selectListByRoomName(roomName);
+        if (roomList.isEmpty()) {
+            return ResponseResult.error();
+        }
+        return ResponseResult.success(RoomToDto(roomList));
+    }
 }

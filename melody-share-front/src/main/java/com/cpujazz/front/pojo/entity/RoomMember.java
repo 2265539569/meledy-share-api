@@ -25,7 +25,5 @@ public class RoomMember {
     private Long userId;
     //加入时间    
     private Date joinTime;
-
-
 }
 

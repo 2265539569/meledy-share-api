@@ -10,4 +10,6 @@ public interface UserService {
     ResponseResult info();
 
     ResponseResult register(UserRegisterDto userRegisterDto);
+
+    ResponseResult roomInfo();
 }

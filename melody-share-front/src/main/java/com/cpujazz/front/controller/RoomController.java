@@ -37,4 +37,9 @@ public class RoomController {
     public ResponseResult exit() {
         return roomService.exit();
     }
+
+    @GetMapping("/search")
+    public ResponseResult search(String roomName) {
+        return roomService.search(roomName);
+    }
 }

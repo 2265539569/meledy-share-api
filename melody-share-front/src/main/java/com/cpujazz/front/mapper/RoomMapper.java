@@ -7,13 +7,13 @@ import java.util.List;
 
 @Mapper
 public interface RoomMapper {
-    List<Room> selectAllList();
+    List<Room> selectList();
 
     int insertOne(Room room);
 
-    Room selectByRoomName(String roomName);
+    Room selectOneByRoomName(String roomName);
 
-    Room selectByRoomId(Long roomId);
+    Room selectOneByRoomId(Long roomId);
 
-    Room selectByUserId(Long userId);
+    List<Room> selectListByRoomName(String roomName);
 }

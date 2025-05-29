@@ -9,19 +9,25 @@
                 #{updatedAt})
     </insert>
 
-    <select id="selectAllList" resultType="com.cpujazz.front.pojo.entity.Room">
+    <select id="selectList" resultType="com.cpujazz.front.pojo.entity.Room">
         select *
         from room
     </select>
-    <select id="selectByRoomName" resultType="com.cpujazz.front.pojo.entity.Room">
+    <select id="selectOneByRoomName" resultType="com.cpujazz.front.pojo.entity.Room">
         select *
         from room
         where room_name = #{roomName}
     </select>
-    <select id="selectByRoomId" resultType="com.cpujazz.front.pojo.entity.Room">
+    <select id="selectOneByRoomId" resultType="com.cpujazz.front.pojo.entity.Room">
         select *
         from room
         where id = #{roomId}
+    </select>
+
+    <select id="selectListByRoomName" resultType="com.cpujazz.front.pojo.entity.Room">
+        SELECT *
+        FROM room
+        WHERE LOWER(room_name) LIKE CONCAT('%', LOWER(#{roomName}), '%')
     </select>
 
 </mapper>

@@ -35,5 +35,10 @@ public class UserController {
     public ResponseResult info() {
         return userService.info();
     }
+
+    @GetMapping("/roomInfo")
+    public ResponseResult roomInfo() {
+        return userService.roomInfo();
+    }
 }
 

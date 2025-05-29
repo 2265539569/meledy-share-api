@@ -5,9 +5,11 @@ import cn.hutool.core.bean.BeanUtil;
 import com.cpujazz.common.enumeration.ResponseMessage;
 import com.cpujazz.common.enumeration.UserRole;
 import com.cpujazz.common.enumeration.UserStatus;
+import com.cpujazz.front.mapper.RoomMemberMapper;
 import com.cpujazz.front.mapper.UserMapper;
 import com.cpujazz.front.pojo.dto.UserLoginDto;
 import com.cpujazz.front.pojo.dto.UserRegisterDto;
+import com.cpujazz.front.pojo.entity.RoomMember;
 import com.cpujazz.front.pojo.entity.User;
 import com.cpujazz.front.pojo.result.ResponseResult;
 import com.cpujazz.front.pojo.vo.UserInfoVo;
@@ -24,6 +26,7 @@ import static cn.dev33.satoken.stp.StpUtil.getLoginIdAsLong;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
+    private final RoomMemberMapper roomMemberMapper;
 
     @Override
     public ResponseResult login(UserLoginDto userLoginDto) {
@@ -66,5 +69,15 @@ public class UserServiceImpl implements UserService {
             return ResponseResult.success(ResponseMessage.SUCCESS_REGISTER);
         }
         return ResponseResult.error();
+    }
+
+    @Override
+    public ResponseResult roomInfo() {
+        Long userId = StpUtil.getLoginIdAsLong();
+        RoomMember roomMember = roomMemberMapper.selectByUserId(userId);
+        if (Objects.isNull(roomMember)) {
+            return ResponseResult.error();
+        }
+        return ResponseResult.success(roomMember.getRoomId());
     }
 }

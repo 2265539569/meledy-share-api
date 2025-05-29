@@ -14,4 +14,6 @@ public interface RoomService {
     ResponseResult info();
 
     ResponseResult exit();
+
+    ResponseResult search(String roomName);
 }
