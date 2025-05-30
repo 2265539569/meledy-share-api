@@ -120,6 +120,8 @@ public class RoomServiceImpl implements RoomService {
         }
         Room room = roomMapper.selectOneByRoomId(roomMember.getRoomId());
         RoomDto roomDto = BeanUtil.copyProperties(room, RoomDto.class);
+        User user = userMapper.selectByUserId(roomDto.getOwnerId());
+        roomDto.setOwnerName(user.getNickname());
         return ResponseResult.success(roomDto);
     }
 

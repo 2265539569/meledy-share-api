@@ -27,7 +27,5 @@ public class ChatRecord {
     private String chatMessage;
     //发送时间    
     private Date sendTime;
-
-
 }
 

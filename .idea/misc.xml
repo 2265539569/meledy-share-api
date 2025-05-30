@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="lombok.AllArgsConstructor" />
-      <item index="1" class="java.lang.String" itemvalue="org.springframework.security.config.annotation.web.configuration.EnableWebSecurity" />
+    <list size="7">
+      <item index="0" class="java.lang.String" itemvalue="jakarta.websocket.OnClose" />
+      <item index="1" class="java.lang.String" itemvalue="jakarta.websocket.OnError" />
+      <item index="2" class="java.lang.String" itemvalue="jakarta.websocket.OnMessage" />
+      <item index="3" class="java.lang.String" itemvalue="jakarta.websocket.OnOpen" />
+      <item index="4" class="java.lang.String" itemvalue="jakarta.websocket.server.ServerEndpoint" />
+      <item index="5" class="java.lang.String" itemvalue="lombok.AllArgsConstructor" />
+      <item index="6" class="java.lang.String" itemvalue="org.springframework.security.config.annotation.web.configuration.EnableWebSecurity" />
     </list>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
